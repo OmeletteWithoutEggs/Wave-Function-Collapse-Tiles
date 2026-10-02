@@ -14,7 +14,7 @@ def draw():
     raylib.draw_fps(10,10)
     raylib.end_drawing()
 
-gridSize = 1920//20,1080//20
+gridSize = 1920//tileSize,1080//tileSize
 
 #0 = open 1 = closed
 tiles = {
@@ -138,13 +138,11 @@ tiles = {
 
 for key in tiles:
     tiles[key]["image"] = raylib.load_texture("images/"+tiles[key]["name"]+".png")
-grid = Grid(gridSize,tiles)
+grid = Grid(gridSize,tiles,tileSize)
 i = 0
 while grid.solve() and not raylib.window_should_close():
-    #draw()
     i+=1
     per = max(int((i/(gridSize[0]*gridSize[1]))*100),1)
-    #if i%per==0:
     print(str(per)+"%")
     draw()
 

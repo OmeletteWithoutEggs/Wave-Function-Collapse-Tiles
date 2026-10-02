@@ -38,11 +38,11 @@ class Tile():
 
 
 class Grid():
-    def __init__(self,size,tiles):
+    def __init__(self,size,tiles,tileSize):
 
         # tiles
         self.tiles = tiles
-        self.tileSize = 20
+        self.tileSize = tileSize
 
         self.updated = []
         # grid
@@ -133,8 +133,6 @@ class Grid():
         else:
             return 
 
-    # def getMatchingPossibilities(self,edges):
-    #    pass
 
     def getSurroundingEdges(self,position) -> list[list[int]]: #done
         x,y = position
