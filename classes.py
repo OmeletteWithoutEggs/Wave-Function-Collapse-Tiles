@@ -66,8 +66,9 @@ class Grid():
         if position == -1:
             return False
         choices = self.possibilities[position][self.possibilities[position]!=-1]
+        weights = [self.tiles[tileId]["frequency"] for tileId in choices]
         try:
-            choice = random.choice(choices)
+            choice = random.choices(choices,weights = weights,k=1)[0]
             self.grid[position] = choice
             self.possibilities[position] = [-1 for i in range(len(self.tiles)-1)] + [choice]
             # print(self.possibilities[position])
@@ -213,12 +214,12 @@ class Grid():
                 tileID = self.possibilities[x,y][i]
                 if tileID != -1:
                     ids.append(tileID)
-
+            if not ids:    
+                raylib.draw_rectangle(x*self.tileActualSize,y*self.tileActualSize,self.tileActualSize,self.tileActualSize,raylib.Color(0,255,255,255))
             for tileID in ids:
                 try:
                     raylib.draw_texture_pro(self.tiles[tileID]["image"],raylib.Rectangle(0,0,self.tileActualSize,-self.tileActualSize),raylib.Rectangle(x*self.tileActualSize,y*self.tileActualSize,self.tileActualSize,self.tileActualSize),raylib.Vector2(0,0),0,raylib.Color(255,255,255,255//len(ids)))
                 except:
-                    #raylib.draw_rectangle(x*self.tileSize,y*self.tileSize,self.tileSize-1,self.tileSize-1,(0,255,255,255/13))
                     pass
             raylib.end_blend_mode()
 
