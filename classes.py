@@ -38,17 +38,18 @@ class Tile():
 
 
 class Grid():
-    def __init__(self,size,tiles,tileSize):
+    def __init__(self,size,tiles,tileSize,tileActualSize ):
 
         # tiles
         self.tiles = tiles
         self.tileSize = tileSize
+        self.tileActualSize = tileActualSize
 
         self.updated = []
         # grid
         self.gridWidth = size[0]
         self.gridHeight= size[1]
-        self.cachedTexture = raylib.load_render_texture(self.gridWidth*self.tileSize,self.gridHeight*self.tileSize)
+        self.cachedTexture = raylib.load_render_texture(self.gridWidth*self.tileActualSize,self.gridHeight*self.tileActualSize)
         self.grid = np.full((self.gridWidth,self.gridHeight),0)
 
         # calculation grids
@@ -205,7 +206,7 @@ class Grid():
         raylib.begin_texture_mode(self.cachedTexture)
         for update in self.updated:
             x,y = update
-            raylib.draw_rectangle(x*self.tileSize,y*self.tileSize,self.tileSize,self.tileSize,raylib.Color(0,0,0,255))
+            raylib.draw_rectangle(x*self.tileActualSize,y*self.tileActualSize,self.tileActualSize,self.tileActualSize,raylib.Color(0,0,0,255))
             raylib.begin_blend_mode(raylib.BLEND_ADDITIVE)
             ids = []
             for i in range(len(self.tiles)):
@@ -215,14 +216,14 @@ class Grid():
 
             for tileID in ids:
                 try:
-                    raylib.draw_texture_pro(self.tiles[tileID]["image"],raylib.Rectangle(0,0,10,-10),raylib.Rectangle(x*self.tileSize,y*self.tileSize,self.tileSize,self.tileSize),raylib.Vector2(0,0),0,raylib.Color(255,255,255,255//len(ids)))
+                    raylib.draw_texture_pro(self.tiles[tileID]["image"],raylib.Rectangle(0,0,self.tileActualSize,-self.tileActualSize),raylib.Rectangle(x*self.tileActualSize,y*self.tileActualSize,self.tileActualSize,self.tileActualSize),raylib.Vector2(0,0),0,raylib.Color(255,255,255,255//len(ids)))
                 except:
                     #raylib.draw_rectangle(x*self.tileSize,y*self.tileSize,self.tileSize-1,self.tileSize-1,(0,255,255,255/13))
                     pass
             raylib.end_blend_mode()
 
         raylib.end_texture_mode()
-        raylib.draw_texture_pro(self.cachedTexture.texture,raylib.Rectangle(0,0,self.tileSize*self.gridWidth,-self.tileSize*self.gridHeight),raylib.Rectangle(0,0,self.tileSize*self.gridWidth,self.tileSize*self.gridHeight),raylib.Vector2(0,0),0,raylib.Color(255,255,255,255))
+        raylib.draw_texture_pro(self.cachedTexture.texture,raylib.Rectangle(0,0,self.tileActualSize*self.gridWidth,-self.tileActualSize*self.gridHeight),raylib.Rectangle(0,0,self.tileSize*self.gridWidth,self.tileSize*self.gridHeight),raylib.Vector2(0,0),0,raylib.Color(255,255,255,255))
 
         # for x in range(self.gridWidth):
         #     for y in range(self.gridHeight):
